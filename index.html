@@ -47,6 +47,10 @@
 
                 <div class="booking-card">
                     <form id="bookingForm" action="javascript:void(0);" novalidate>
+                        <!-- Скрытые поля для передачи в FormData / API -->
+                        <input type="hidden" name="brand" id="brandInput" value="vag" />
+                        <input type="hidden" name="task" id="taskInput" value="to" />
+
                         <div class="form-grid">
                             
                             <div class="form-group">
@@ -79,9 +83,9 @@
 
                             <div class="form-group">
                                 <span class="form-label">3. Ваши данные</span>
-                                <input type="text" id="nameInput" class="phone-input" style="margin-bottom: 8px; font-family: var(--font-body);" placeholder="Ваше имя" autocomplete="name" />
+                                <input type="text" id="nameInput" name="name" class="phone-input" style="margin-bottom: 8px; font-family: var(--font-body);" placeholder="Ваше имя" autocomplete="name" required />
                                 <div class="phone-action-row">
-                                    <input type="tel" id="phoneInput" class="phone-input" placeholder="+7 (___) ___-__-__" pattern="[0-9]*" inputmode="numeric" autocomplete="tel" maxlength="18" required />
+                                    <input type="tel" id="phoneInput" name="phone" class="phone-input" placeholder="+7 (___) ___-__-__" pattern="[0-9]*" inputmode="numeric" autocomplete="tel" maxlength="18" required />
                                     <button type="submit" class="btn btn-primary" id="submitBooking">
                                         Забронировать
                                     </button>
@@ -354,14 +358,16 @@
             var form = document.getElementById('bookingForm');
             var brandGroup = document.getElementById('brandGroup');
             var taskGroup = document.getElementById('taskGroup');
+            var nameInput = document.getElementById('nameInput');
             var phoneInput = document.getElementById('phoneInput');
+            var brandInput = document.getElementById('brandInput');
+            var taskInput = document.getElementById('taskInput');
+            var submitBtn = document.getElementById('submitBooking');
+            
             var successModal = document.getElementById('successModal');
             var closeModalBtn = document.getElementById('closeModalBtn');
             var modalOkBtn = document.getElementById('modalOkBtn');
             var orderIdSpan = document.getElementById('orderId');
-
-            var selectedBrand = 'vag';
-            var selectedTask = 'to';
 
             function formatPhone(value) {
                 var digits = value.replace(/\D/g, '');
@@ -382,7 +388,7 @@
                 });
             });
 
-            function setupTagGroup(group, isTaskGroup) {
+            function setupTagGroup(group, targetInput, isTaskGroup) {
                 if (!group) return;
                 var tags = group.querySelectorAll('.tag');
                 tags.forEach(function(tag) {
@@ -391,17 +397,14 @@
                         tags.forEach(function(t) { t.classList.remove('selected', 'selected-cyan'); });
                         tag.classList.add(isTaskGroup ? 'selected-cyan' : 'selected');
                         
-                        if (isTaskGroup) {
-                            selectedTask = tag.getAttribute('data-value');
-                        } else {
-                            selectedBrand = tag.getAttribute('data-value');
-                        }
+                        var val = tag.getAttribute('data-value');
+                        targetInput.value = val;
                     });
                 });
             }
 
-            setupTagGroup(brandGroup, false);
-            setupTagGroup(taskGroup, true);
+            setupTagGroup(brandGroup, brandInput, false);
+            setupTagGroup(taskGroup, taskInput, true);
 
             function closeModal() {
                 successModal.classList.remove('open');
@@ -412,29 +415,65 @@
             modalOkBtn.addEventListener('click', closeModal);
             successModal.addEventListener('click', function(e) { if (e.target === successModal) closeModal(); });
 
-            form.addEventListener('submit', function(e) {
+            form.addEventListener('submit', async function(e) {
                 e.preventDefault();
+                
+                var nameVal = nameInput.value.trim();
                 var phoneVal = phoneInput.value.replace(/\D/g, '');
                 
-                if (phoneVal.length !== 11) {
-                    phoneInput.style.borderColor = 'var(--accent-orange)';
-                    setTimeout(function() { phoneInput.style.borderColor = ''; }, 1000);
+                // Валидация имени
+                if (nameVal.length < 2) {
+                    nameInput.style.borderColor = 'var(--accent-orange)';
+                    setTimeout(function() { nameInput.style.borderColor = ''; }, 1200);
+                    nameInput.focus();
                     return;
                 }
 
-                var id = String(Math.floor(1000 + Math.random() * 9000));
-                orderIdSpan.textContent = id;
+                // Валидация телефона (11 цифр с учетом код страны 7)
+                if (phoneVal.length !== 11) {
+                    phoneInput.style.borderColor = 'var(--accent-orange)';
+                    setTimeout(function() { phoneInput.style.borderColor = ''; }, 1200);
+                    phoneInput.focus();
+                    return;
+                }
 
-                console.log('[Payload]', {
-                    brand: selectedBrand,
-                    task: selectedTask,
-                    name: document.getElementById('nameInput').value,
-                    phone: phoneInput.value,
-                    orderId: id
-                });
+                // Включаем состояние загрузки
+                var originalBtnText = submitBtn.textContent;
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Отправка...';
 
-                successModal.classList.add('open');
-                document.body.style.overflow = 'hidden';
+                var orderId = String(Math.floor(1000 + Math.random() * 9000));
+                var formData = new FormData(form);
+                formData.append('orderId', orderId);
+
+                try {
+                    // Симуляция задержки сети, пока бэкенд не готов
+                    // Замени URL ниже на свой endpoint (например '/api/booking' или n8n webhook)
+                    /*
+                    var response = await fetch('/api/booking', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) throw new Error('Ошибка сервера');
+                    */
+
+                    // Временный таймаут для эмуляции запроса
+                    await new Promise(resolve => setTimeout(resolve, 600));
+
+                    orderIdSpan.textContent = orderId;
+                    successModal.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                    form.reset();
+
+                } catch (err) {
+                    alert('Не удалось отправить заявку. Пожалуйста, проверьте интернет-соединение или позвоните нам.');
+                    console.error('[Submit Error]:', err);
+                } finally {
+                    // Сбрасываем состояние кнопки
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                }
             });
 
             var scrollBtns = document.querySelectorAll('.js-scroll-to-form');
