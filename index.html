@@ -478,13 +478,13 @@
 
                     // ПОДКЛЮЧЕНИЕ К БЭКЕНДУ / N8N:
                     // Замени раскомментированный блок ниже на свой webhook URL:
-                    /*
-                    var response = await fetch('https://your-n8n-instance.com/webhook/autofix-lead', {
+                    
+                    var response = await fetch('https://httpbin.org/post', {
                         method: 'POST',
                         body: formData
                     });
                     if (!response.ok) throw new Error('Network error');
-                    */
+                    
 
                     // Таймаут для локальной демонстрации
                     await new Promise(resolve => setTimeout(resolve, 600));
