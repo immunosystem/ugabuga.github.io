@@ -27,17 +27,19 @@
             --accent-orange: #FF5500;
             --accent-orange-hover: #E04A00;
             --accent-cyan: #00E5FF;
+            --accent-green: #00E676;
+            --accent-red: #FF5252;
             --border-color: #262A30;
             --border-highlight: #3A404A;
             --text-primary: #F0F2F5;
             --text-secondary: #8A909A;
-            --radius-sm: 6px;
+            --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
             --font-heading: 'Unbounded', -apple-system, sans-serif;
             --font-body: 'Inter', -apple-system, sans-serif;
-            --font-mono: 'Roboto Mono', system-ui, -apple-system, monospace;
-            --space-section: 56px;
+            --font-mono: 'Roboto Mono', monospace;
+            --space-section: 48px;
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
@@ -52,9 +54,9 @@
             font-family: var(--font-body);
             background-color: var(--bg-main);
             background-image:
-              linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+              linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 32px 32px;
             color: var(--text-primary);
             line-height: 1.5;
             padding-top: var(--safe-top);
@@ -84,9 +86,11 @@
 
         /* ===== LAYOUT & GRID ===== */
         .container {
+            width: 100%;
             max-width: 1100px;
             margin: 0 auto;
-            padding: 0 16px;
+            padding-left: 16px;
+            padding-right: 16px;
         }
 
         .section {
@@ -95,17 +99,17 @@
         }
 
         .section-header {
-            margin-bottom: 28px;
+            margin-bottom: 24px;
         }
 
         .section-header h2 {
-            font-size: 1.45rem;
+            font-size: 1.35rem;
             line-height: 1.25;
             margin-bottom: 6px;
         }
 
         .section-header .sub {
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--text-secondary);
         }
 
@@ -142,8 +146,8 @@
             position: sticky;
             top: 0;
             z-index: 900;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
         .header-inner {
@@ -151,7 +155,6 @@
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            flex-wrap: wrap;
         }
 
         .brand-logo {
@@ -169,12 +172,12 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            flex-wrap: wrap;
         }
 
         .work-hours {
             font-size: 0.75rem;
             color: var(--text-secondary);
+            display: none;
         }
 
         .phone-link {
@@ -183,37 +186,40 @@
             font-weight: 700;
             font-size: 0.88rem;
             white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         /* ===== HERO & FORM ===== */
         .hero {
-            padding: 24px 0 var(--space-section) 0;
+            padding: 20px 0 var(--space-section) 0;
             border-bottom: 1px solid var(--border-color);
         }
 
         .hero-layout {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .hero-text h1 {
-            font-size: 1.65rem;
+            font-size: 1.5rem;
             line-height: 1.25;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .hero-text .subhead {
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             color: var(--text-secondary);
-            line-height: 1.5;
+            line-height: 1.45;
         }
 
         .booking-card {
             background: var(--bg-surface);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-lg);
-            padding: 20px;
+            padding: 16px;
             box-shadow: 0 12px 32px rgba(0,0,0,0.35);
         }
 
@@ -379,7 +385,7 @@
 
         .stat-card .num {
             font-family: var(--font-heading);
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             color: var(--accent-orange);
             display: block;
         }
@@ -431,9 +437,10 @@
             align-items: center;
             justify-content: center;
             color: var(--text-secondary);
+            padding: 8px;
         }
-        .gallery-item svg { width: 32px; height: 32px; margin-bottom: 6px; opacity: 0.5; color: var(--accent-cyan); }
-        .gallery-item span { font-size: 0.78rem; font-weight: 500; text-align: center; padding: 0 8px; color: var(--text-primary); }
+        .gallery-item svg { width: 32px; height: 32px; margin-bottom: 6px; opacity: 0.7; color: var(--accent-cyan); }
+        .gallery-item span { font-size: 0.78rem; font-weight: 500; text-align: center; color: var(--text-primary); }
 
         /* ===== PRICE LIST ===== */
         .price-list {
@@ -453,20 +460,20 @@
         }
 
         .price-info { display: flex; flex-direction: column; gap: 4px; }
-        .price-item .name { font-weight: 600; font-size: 0.95rem; }
+        .price-item .name { font-weight: 600; font-size: 0.92rem; }
         .price-meta { display: flex; align-items: center; gap: 12px; }
 
         .price-item .price {
             font-family: var(--font-mono);
             color: var(--accent-orange);
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
         }
 
         .price-item .time {
             font-family: var(--font-mono);
             color: var(--text-secondary);
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             display: inline-flex;
             align-items: center;
             gap: 4px;
@@ -483,7 +490,7 @@
             background: var(--bg-surface);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            padding: 18px;
+            padding: 16px;
         }
 
         .compare-card .label {
@@ -504,8 +511,8 @@
         .compare-card ul li {
             font-size: 0.85rem;
             display: flex;
-            align-items: flex-start;
-            gap: 8px;
+            align-items: center;
+            gap: 10px;
         }
 
         .compare-card.highlight {
@@ -515,11 +522,23 @@
 
         .compare-card.highlight .label { color: var(--accent-orange); }
 
+        .status-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .status-icon-cross { color: var(--accent-red); }
+        .status-icon-check { color: var(--accent-orange); }
+
         /* ===== LOCATION & MAP MOCKUP ===== */
         .map-wrapper {
             position: relative;
             width: 100%;
-            height: 260px;
+            height: 240px;
             background: #14171C;
             border: 1px solid var(--border-color);
             border-radius: var(--radius-lg);
@@ -561,7 +580,7 @@
             left: 12px;
             right: 12px;
             z-index: 3;
-            background: rgba(22, 25, 30, 0.92);
+            background: rgba(22, 25, 30, 0.95);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
             padding: 12px 14px;
@@ -680,8 +699,9 @@
         /* ===== RESPONSIVE ===== */
         @media (min-width: 768px) {
             .hero { padding: 48px 0; }
-            .hero-layout { grid-template-columns: 1fr 1fr; align-items: center; gap: 40px; }
+            .hero-layout { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 40px; }
             .hero-text h1 { font-size: 2.2rem; }
+            .work-hours { display: inline-block; }
             .section-header h2 { font-size: 1.8rem; }
             .gallery-grid { grid-template-columns: repeat(4, 1fr); }
             .price-item { flex-direction: row; align-items: center; justify-content: space-between; }
@@ -707,7 +727,12 @@
             </a>
             <div class="header-contacts">
                 <span class="work-hours mono">09:00 — 21:00</span>
-                <a href="tel:+74951234567" class="phone-link mono">+7 (495) 123-45-67</a>
+                <a href="tel:+74951234567" class="phone-link mono">
+                    <span class="icon-sm" style="color:var(--accent-orange);">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </span>
+                    +7 (495) 123-45-67
+                </a>
             </div>
         </div>
     </header>
@@ -751,7 +776,7 @@
 
                             <div class="promo-badge">
                                 <span class="icon-sm" style="color:var(--accent-cyan);">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
                                 </span>
                                 <span><strong>Акция:</strong> Диагностика 0 ₽ при первом визите</span>
                             </div>
@@ -855,7 +880,12 @@
                         <span class="name">Замена масла и фильтров</span>
                         <div class="price-meta">
                             <span class="price">от 2 400 ₽</span>
-                            <span class="time">40 мин</span>
+                            <span class="time">
+                                <span class="icon-sm" style="color:var(--text-secondary);">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                </span>
+                                40 мин
+                            </span>
                         </div>
                     </div>
                     <button type="button" class="btn btn-secondary btn-sm js-scroll-to-form">Записаться</button>
@@ -866,7 +896,12 @@
                         <span class="name">Комплексная диагностика ходовой</span>
                         <div class="price-meta">
                             <span class="price" style="color:var(--accent-cyan);">0 ₽</span>
-                            <span class="time">20 мин</span>
+                            <span class="time">
+                                <span class="icon-sm" style="color:var(--text-secondary);">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                </span>
+                                20 мин
+                            </span>
                         </div>
                     </div>
                     <button type="button" class="btn btn-secondary btn-sm js-scroll-to-form">Записаться</button>
@@ -877,7 +912,12 @@
                         <span class="name">Замена тормозных колодок и дисков</span>
                         <div class="price-meta">
                             <span class="price">от 3 800 ₽</span>
-                            <span class="time">60 мин</span>
+                            <span class="time">
+                                <span class="icon-sm" style="color:var(--text-secondary);">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                </span>
+                                60 мин
+                            </span>
                         </div>
                     </div>
                     <button type="button" class="btn btn-secondary btn-sm js-scroll-to-form">Записаться</button>
@@ -895,18 +935,48 @@
                 <div class="compare-card">
                     <span class="label">Официальный дилер</span>
                     <ul>
-                        <li><span style="color:#ff4444;">✕</span> Ожидание очереди от 5 дней</li>
-                        <li><span style="color:#ff4444;">✕</span> Высокая стоимость нормо-часа</li>
-                        <li><span style="color:#ff4444;">✕</span> Закрытая ремзона</li>
+                        <li>
+                            <span class="status-icon status-icon-cross">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            </span>
+                            Ожидание очереди от 5 дней
+                        </li>
+                        <li>
+                            <span class="status-icon status-icon-cross">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            </span>
+                            Высокая стоимость нормо-часа
+                        </li>
+                        <li>
+                            <span class="status-icon status-icon-cross">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            </span>
+                            Закрытая ремзона
+                        </li>
                     </ul>
                 </div>
 
                 <div class="compare-card highlight">
                     <span class="label">AUTOFIX</span>
                     <ul>
-                        <li><span style="color:var(--accent-orange);">✓</span> Прием за 15 минут в день обращения</li>
-                        <li><span style="color:var(--accent-orange);">✓</span> Экономия до 40% от цен дилера</li>
-                        <li><span style="color:var(--accent-orange);">✓</span> Доступ в ремзону + видеоотчеты</li>
+                        <li>
+                            <span class="status-icon status-icon-check">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            Прием за 15 минут в день обращения
+                        </li>
+                        <li>
+                            <span class="status-icon status-icon-check">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            Экономия до 40% от цен дилера
+                        </li>
+                        <li>
+                            <span class="status-icon status-icon-check">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            </span>
+                            Доступ в ремзону + видеоотчеты
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -997,7 +1067,6 @@
             var selectedBrand = 'vag';
             var selectedTask = 'to';
 
-            // Нативная обработка маски для Telegram WebView
             function formatPhone(value) {
                 var digits = value.replace(/\D/g, '');
                 if (!digits) return '';
@@ -1017,7 +1086,6 @@
                 });
             });
 
-            // Настройка тегов
             function setupTagGroup(group, isTaskGroup) {
                 if (!group) return;
                 var tags = group.querySelectorAll('.tag');
@@ -1039,7 +1107,6 @@
             setupTagGroup(brandGroup, false);
             setupTagGroup(taskGroup, true);
 
-            // Закрытие модалки
             function closeModal() {
                 successModal.classList.remove('open');
                 document.body.style.overflow = '';
@@ -1049,7 +1116,6 @@
             modalOkBtn.addEventListener('click', closeModal);
             successModal.addEventListener('click', function(e) { if (e.target === successModal) closeModal(); });
 
-            // Отправка формы
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 var phoneVal = phoneInput.value.replace(/\D/g, '');
@@ -1075,7 +1141,6 @@
                 document.body.style.overflow = 'hidden';
             });
 
-            // Плавный скролл к форме со всех кнопок "Записаться"
             var scrollBtns = document.querySelectorAll('.js-scroll-to-form');
             scrollBtns.forEach(function(btn) {
                 btn.addEventListener('click', function(e) {
