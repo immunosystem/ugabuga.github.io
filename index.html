@@ -86,11 +86,13 @@
 
         /* ===== LAYOUT & GRID ===== */
         .container {
-            width: 100%;
+            width: 100% !important;
             max-width: 1100px;
-            margin: 0 auto;
-            padding-left: 16px;
-            padding-right: 16px;
+			margin-left: auto !important;
+			margin-right: auto !important;
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+			box-sizing: border-box !important;
         }
 
         .section {
@@ -216,11 +218,14 @@
         }
 
         .booking-card {
+            width: 100% !important;
+			box-sizing: border-box !important;
             background: var(--bg-surface);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-lg);
             padding: 16px;
-            box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+			box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+			overflow: hidden;
         }
 
         .form-grid {
