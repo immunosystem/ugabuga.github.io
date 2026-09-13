@@ -50,6 +50,9 @@
                         <!-- Скрытые поля для передачи в FormData / API -->
                         <input type="hidden" name="brand" id="brandInput" value="vag" />
                         <input type="hidden" name="task" id="taskInput" value="to" />
+                        
+                        <!-- Honeypot для защиты от ботов -->
+                        <input type="text" name="b_website" tabindex="-1" value="" autocomplete="off" style="position: absolute; left: -9999px; opacity: 0;" />
 
                         <div class="form-grid">
                             
@@ -83,8 +86,11 @@
 
                             <div class="form-group">
                                 <span class="form-label">3. Ваши данные</span>
-                                <input type="text" id="nameInput" name="name" class="phone-input" style="margin-bottom: 8px; font-family: var(--font-body);" placeholder="Ваше имя" autocomplete="name" required />
-                                <div class="phone-action-row">
+                                <div style="position: relative; margin-bottom: 8px;">
+                                    <input type="text" id="nameInput" name="name" class="phone-input" style="font-family: var(--font-body);" placeholder="Ваше имя" autocomplete="name" maxlength="30" required />
+                                    <span id="nameError" style="display:none; color: var(--accent-orange); font-size: 0.75rem; position: absolute; bottom: -16px; left: 0;">Введите имя (от 2 букв)</span>
+                                </div>
+                                <div class="phone-action-row" style="margin-top: 4px;">
                                     <input type="tel" id="phoneInput" name="phone" class="phone-input" placeholder="+7 (___) ___-__-__" pattern="[0-9]*" inputmode="numeric" autocomplete="tel" maxlength="18" required />
                                     <button type="submit" class="btn btn-primary" id="submitBooking">
                                         Забронировать
@@ -363,12 +369,19 @@
             var brandInput = document.getElementById('brandInput');
             var taskInput = document.getElementById('taskInput');
             var submitBtn = document.getElementById('submitBooking');
+            var nameError = document.getElementById('nameError');
             
             var successModal = document.getElementById('successModal');
             var closeModalBtn = document.getElementById('closeModalBtn');
             var modalOkBtn = document.getElementById('modalOkBtn');
             var orderIdSpan = document.getElementById('orderId');
 
+            // 1. Ограничение ввода имени: только буквы (рус/англ), пробелы и дефисы
+            nameInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^a-zA-Zа-яА-ЯёЁ\s-]/g, '');
+            });
+
+            // 2. Маска телефона
             function formatPhone(value) {
                 var digits = value.replace(/\D/g, '');
                 if (!digits) return '';
@@ -388,6 +401,7 @@
                 });
             });
 
+            // 3. Выбор тегов (переключение скрытых инпутов)
             function setupTagGroup(group, targetInput, isTaskGroup) {
                 if (!group) return;
                 var tags = group.querySelectorAll('.tag');
@@ -396,9 +410,7 @@
                         e.preventDefault();
                         tags.forEach(function(t) { t.classList.remove('selected', 'selected-cyan'); });
                         tag.classList.add(isTaskGroup ? 'selected-cyan' : 'selected');
-                        
-                        var val = tag.getAttribute('data-value');
-                        targetInput.value = val;
+                        targetInput.value = tag.getAttribute('data-value');
                     });
                 });
             }
@@ -406,6 +418,7 @@
             setupTagGroup(brandGroup, brandInput, false);
             setupTagGroup(taskGroup, taskInput, true);
 
+            // 4. Закрытие модалки
             function closeModal() {
                 successModal.classList.remove('open');
                 document.body.style.overflow = '';
@@ -415,29 +428,40 @@
             modalOkBtn.addEventListener('click', closeModal);
             successModal.addEventListener('click', function(e) { if (e.target === successModal) closeModal(); });
 
+            // 5. Отправка формы
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
+                // ЗАЩИТА 1: Honeypot (ловушка для спам-ботов)
+                var honeypot = form.querySelector('input[name="b_website"]').value;
+                if (honeypot) {
+                    showSuccessModal('0000');
+                    return;
+                }
+
+                // ЗАЩИТА 2: Rate limit (не чаще 1 раза в 60 сек с одного устройства)
+                var lastSubmit = localStorage.getItem('last_submit_time');
+                var now = Date.now();
+                if (lastSubmit && (now - lastSubmit < 60000)) {
+                    alert('Вы уже отправили заявку. Пожалуйста, подождите 1 минуту перед повторной отправкой.');
+                    return;
+                }
+
                 var nameVal = nameInput.value.trim();
                 var phoneVal = phoneInput.value.replace(/\D/g, '');
                 
-                // Валидация имени
+                // Валидация имени (минимум 2 буквы)
                 if (nameVal.length < 2) {
-                    nameInput.style.borderColor = 'var(--accent-orange)';
-                    setTimeout(function() { nameInput.style.borderColor = ''; }, 1200);
-                    nameInput.focus();
+                    showInputError(nameInput, nameError);
                     return;
                 }
 
-                // Валидация телефона (11 цифр с учетом код страны 7)
+                // Валидация телефона (11 цифр с учетом 7)
                 if (phoneVal.length !== 11) {
-                    phoneInput.style.borderColor = 'var(--accent-orange)';
-                    setTimeout(function() { phoneInput.style.borderColor = ''; }, 1200);
-                    phoneInput.focus();
+                    showInputError(phoneInput, null);
                     return;
                 }
 
-                // Включаем состояние загрузки
                 var originalBtnText = submitBtn.textContent;
                 submitBtn.disabled = true;
                 submitBtn.textContent = 'Отправка...';
@@ -447,34 +471,53 @@
                 formData.append('orderId', orderId);
 
                 try {
-                    // Симуляция задержки сети, пока бэкенд не готов
-                    // Замени URL ниже на свой endpoint (например '/api/booking' или n8n webhook)
+                    // Проверка подсоединения к интернету
+                    if (!navigator.onLine) {
+                        throw new Error('No internet connection');
+                    }
+
+                    // ПОДКЛЮЧЕНИЕ К БЭКЕНДУ / N8N:
+                    // Замени раскомментированный блок ниже на свой webhook URL:
                     /*
-                    var response = await fetch('/api/booking', {
+                    var response = await fetch('https://your-n8n-instance.com/webhook/autofix-lead', {
                         method: 'POST',
                         body: formData
                     });
-
-                    if (!response.ok) throw new Error('Ошибка сервера');
+                    if (!response.ok) throw new Error('Network error');
                     */
 
-                    // Временный таймаут для эмуляции запроса
+                    // Таймаут для локальной демонстрации
                     await new Promise(resolve => setTimeout(resolve, 600));
 
-                    orderIdSpan.textContent = orderId;
-                    successModal.classList.add('open');
-                    document.body.style.overflow = 'hidden';
+                    localStorage.setItem('last_submit_time', Date.now());
+                    showSuccessModal(orderId);
                     form.reset();
 
                 } catch (err) {
-                    alert('Не удалось отправить заявку. Пожалуйста, проверьте интернет-соединение или позвоните нам.');
+                    alert('Не удалось отправить заявку. Проверьте подключение к интернету или попробуйте позже.');
                     console.error('[Submit Error]:', err);
                 } finally {
-                    // Сбрасываем состояние кнопки
                     submitBtn.disabled = false;
                     submitBtn.textContent = originalBtnText;
                 }
             });
+
+            function showInputError(inputEl, errorTextEl) {
+                inputEl.style.borderColor = 'var(--accent-orange)';
+                if (errorTextEl) errorTextEl.style.display = 'block';
+                inputEl.focus();
+
+                setTimeout(function() {
+                    inputEl.style.borderColor = '';
+                    if (errorTextEl) errorTextEl.style.display = 'none';
+                }, 2000);
+            }
+
+            function showSuccessModal(id) {
+                orderIdSpan.textContent = id;
+                successModal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
 
             var scrollBtns = document.querySelectorAll('.js-scroll-to-form');
             scrollBtns.forEach(function(btn) {
