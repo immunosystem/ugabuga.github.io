@@ -479,7 +479,7 @@
                     // ПОДКЛЮЧЕНИЕ К БЭКЕНДУ / N8N:
                     // Замени раскомментированный блок ниже на свой webhook URL:
                     
-                    var response = await fetch('https://httpbin.org/post', {
+                    var response = await fetch('http://localhost:5678/webhook-test/auto-lead', {
                         method: 'POST',
                         body: formData
                     });
