@@ -48,8 +48,8 @@
                 <div class="booking-card">
                     <form id="bookingForm" action="javascript:void(0);" novalidate>
                         <!-- Скрытые поля для передачи в FormData / API -->
-                        <input type="hidden" name="brand" id="brandInput" value="vag" />
-                        <input type="hidden" name="task" id="taskInput" value="to" />
+                        <input type="hidden" name="brand" id="brandInput" value="VAG" />
+                        <input type="hidden" name="task" id="taskInput" value="Плановое ТО" />
                         
                         <!-- Honeypot для защиты от ботов -->
                         <input type="text" name="b_website" tabindex="-1" value="" autocomplete="off" style="position: absolute; left: -9999px; opacity: 0;" />
@@ -59,21 +59,21 @@
                             <div class="form-group">
                                 <span class="form-label">1. Выберите марку</span>
                                 <div class="tag-group" id="brandGroup">
-                                    <button type="button" class="tag selected" data-value="vag">VAG</button>
-                                    <button type="button" class="tag" data-value="toyota">Toyota / Lexus</button>
-                                    <button type="button" class="tag" data-value="bmw">BMW / MB</button>
-                                    <button type="button" class="tag" data-value="korean">Korean</button>
-                                    <button type="button" class="tag" data-value="other">Другое</button>
+                                    <button type="button" class="tag selected" data-value="VAG">VAG</button>
+                                    <button type="button" class="tag" data-value="Toyota / Lexus">Toyota / Lexus</button>
+                                    <button type="button" class="tag" data-value="BMW / Mercedes-Benz">BMW / MB</button>
+                                    <button type="button" class="tag" data-value="Корейские авто">Korean</button>
+                                    <button type="button" class="tag" data-value="Другое">Другое</button>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <span class="form-label">2. Что нужно сделать?</span>
                                 <div class="tag-group" id="taskGroup">
-                                    <button type="button" class="tag selected-cyan" data-value="to">Плановое ТО</button>
-                                    <button type="button" class="tag" data-value="diagnostic">Диагностика</button>
-                                    <button type="button" class="tag" data-value="brakes">Тормоза</button>
-                                    <button type="button" class="tag" data-value="suspension">Подвеска</button>
+                                    <button type="button" class="tag selected-cyan" data-value="Плановое ТО">Плановое ТО</button>
+                                    <button type="button" class="tag" data-value="Диагностика">Диагностика</button>
+                                    <button type="button" class="tag" data-value="Тормозная система">Тормоза</button>
+                                    <button type="button" class="tag" data-value="Ремонт подвески">Подвеска</button>
                                 </div>
                             </div>
 
